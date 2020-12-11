@@ -1,22 +1,24 @@
-package com.example.helloSpring.repository.service;
+package com.example.helloSpring.service;
 
 import com.example.helloSpring.domain.Member;
 import com.example.helloSpring.repository.MemoryMemberRepository;
-import org.assertj.core.api.Assertions;
+import com.example.helloSpring.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MemberServiceTest {
 
     MemberService memberService;
-    MemoryMemberRepository memoryMemberRepository;
+    MemoryMemberRepository memberRepository;
 
     @BeforeEach
     public void beforeEach(){
-        MemberService memberService;
-        MemoryMemberRepository
+        memberRepository = new MemoryMemberRepository();
+        memberService = new MemberService(memberRepository);
     }
 
     @Test
@@ -25,12 +27,12 @@ class MemberServiceTest {
         Member member = new Member();
         member.setName("Hello");
         //when
-        Long saveId = MemberService.join(member);
+        Long saveId = memberService.join(member);
         //then
-        Member findMember = memoryMemberRepository.findById(saveId).get();
+        Member findMember = memberRepository.findById(saveId).get();
         System.out.println("findMember.getName() = " + findMember.getName() );
         System.out.println(member.getName());
-//        Assertions.assertThat(findMember.getName()).isEqualTo(member.getName());
+        Assertions.assertThat(findMember.getName()).isEqualTo(member.getName());
     }
 
     @Test
